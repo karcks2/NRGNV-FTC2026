@@ -18,6 +18,7 @@ public class MainTeleop extends LinearOpMode {
         XDrive drive = new XDrive(hardwareMap);
 
         waitForStart();
+        drive.resetRamping();
 
         boolean previousRightBumper = false;
         boolean previousLeftBumper = false;
@@ -69,6 +70,7 @@ public class MainTeleop extends LinearOpMode {
             // alusta uut telemetry tsyklit
             telemetry.update();
         }
+        drive.stop();
 
     }
 }
