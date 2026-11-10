@@ -19,10 +19,11 @@ public class MainTeleop extends LinearOpMode {
 
         waitForStart();
 
-        double power = -gamepad1.left_stick_y;
-        double steering = -gamepad1.left_stick_x;
+        boolean previousRightBumper = false;
+        boolean previousLeftBumper = false;
 
-        
+        // algne speed limit
+        double speedlimit = 0.5;// 0.5 limiteerib mootori kiirust 50%-ni
 
 
         // puldiga juhtimine on aktiivne
@@ -40,34 +41,15 @@ public class MainTeleop extends LinearOpMode {
             telemetry.addData("Right stick Y", gamepad1.right_stick_y);
             telemetry.addData("Right stick X", gamepad1.right_stick_x);
 
-            // nupp a ja b vajutuse kontroll
-            if (gamepad1.a && gamepad1.b){
-
-                telemetry.addData("A and B button", "Button pressed");
-
-            } else if (gamepad1.a && !gamepad1.b) {
-
-                telemetry.addData("A and B button","only A pressed");
-
-            } else if (gamepad1.b && !gamepad1.a) {
-
-                telemetry.addData("A and B button", "Only B pressed");
-
-            } else{
-
-                telemetry.addData("A and B button", "Released");
-
+            // speed limiti muutmine
+            if (gamepad1.right_bumper && !previousRightBumper){
+                speedlimit += 0.1;
             }
-
-            //
-            if (gamepad1.left_bumper || gamepad1.right_bumper && !gamepad1.a){
-
-                telemetry.addData("LEFT and RIGHT pumper", "LEFT or RIGHT pumper pressed while A button is not pressed");
-
+            else if (gamepad1.left_bumper && !previousLeftBumper) {
+                speedlimit -= 0.1;
             }
-
-            // puldiga juhtimine
-            double speedlimit = 0.5;// 0.5 limiteerib mootori kiirust 50%-ni
+            // maksimaalne ja minimaalne speedlimit suurus
+            speedlimit = Math.max(0.0, Math.min(1.0,speedlimit));
 
             double forward = -gamepad1.left_stick_y * speedlimit;
             double strafe = gamepad1.left_stick_x * speedlimit;
@@ -75,6 +57,14 @@ public class MainTeleop extends LinearOpMode {
 
             // drive functioni ja drive object btw ma tean sen sitt
             drive.drive(forward,strafe,turn);
+
+            boolean currentLeftBumper = gamepad1.left_bumper;
+            boolean currentRightBumper = gamepad1.right_bumper;
+
+            previousRightBumper = currentRightBumper;
+            previousLeftBumper = currentLeftBumper;
+
+            telemetry.addData("Speed limit", speedlimit);
 
             // alusta uut telemetry tsyklit
             telemetry.update();
