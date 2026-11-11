@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 // FTC libraryd
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.teamcode.subsystems.robotIMU;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 // ise loodud libary
 import org.firstinspires.ftc.teamcode.subsystems.XDrive;
@@ -17,7 +19,6 @@ public class MainTeleop extends LinearOpMode {
 
         if (Math.abs(value) <= 0.03){ // 3% Deadzone
 
-
             return 0;
 
         }
@@ -29,11 +30,19 @@ public class MainTeleop extends LinearOpMode {
 
         XDrive drive = new XDrive(hardwareMap);
 
+        robotIMU robotIMU = new robotIMU(hardwareMap);
+
+        Intake intake = new Intake(hardwareMap);
+
         waitForStart();
         drive.resetRamping();
 
+        // speed limit
         boolean previousRightBumper = false;
         boolean previousLeftBumper = false;
+
+        // nom nom trigger
+        boolean previousR2 = false;
 
         // algne speed limit
         double speedlimit = 0.5;// 0.5 limiteerib mootori kiirust 50%-ni
@@ -69,17 +78,32 @@ public class MainTeleop extends LinearOpMode {
             // drive functioni ja drive object btw ma tean sen sitt
             drive.drive(forward,strafe,turn);
 
+            // nom nom tirgger
+            if (gamepad1.right_trigger > 0.5 && !previousR2) {
+
+                intake.toggle();
+            }
+
             boolean currentLeftBumper = gamepad1.left_bumper;
             boolean currentRightBumper = gamepad1.right_bumper;
+
+            boolean currentR2Trigger = gamepad1.right_trigger > 0.5;
 
             previousRightBumper = currentRightBumper;
             previousLeftBumper = currentLeftBumper;
 
+            previousR2 = currentR2Trigger;
+
             telemetry.addData("Speed limit", speedlimit);
+
+            telemetry.addData("Yaw", robotIMU.getYaw());
+            telemetry.addData("Pitch", robotIMU.getPitch());
+            telemetry.addData("Roll", robotIMU.getRoll());
 
             // alusta uut telemetry tsyklit
             telemetry.update();
         }
         drive.stop();
+        intake.stop();
     }
 }
