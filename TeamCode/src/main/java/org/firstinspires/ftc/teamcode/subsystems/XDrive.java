@@ -21,7 +21,7 @@ public class XDrive {
         private double previousStrafe = 0;
         private double previousTurn = 0;
 
-        private static final double ACCELERATION_RATE = 2.0;
+        private static final double ACCELERATION_RATE = 5.0;
 
         private final ElapsedTime rampTimer = new ElapsedTime();
 

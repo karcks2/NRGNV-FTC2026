@@ -12,6 +12,18 @@ import org.firstinspires.ftc.teamcode.subsystems.XDrive;
 
 public class MainTeleop extends LinearOpMode {
 
+    // Deadzone function
+    private double applyDeadzone(double value) {
+
+        if (Math.abs(value) <= 0.03){ // 3% Deadzone
+
+
+            return 0;
+
+        }
+        return value;
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -26,21 +38,19 @@ public class MainTeleop extends LinearOpMode {
         // algne speed limit
         double speedlimit = 0.5;// 0.5 limiteerib mootori kiirust 50%-ni
 
-
         // puldiga juhtimine on aktiivne
         while (opModeIsActive()){
 
-            // Kuvatav telemeetria aka SLOP
+            // Kuvatav telemeetria
 
-            telemetry.addData("Status", "Robot is running");
+            telemetry.addData("Status", "Robot is generating slop");
 
             // Vasak stick
-            telemetry.addData("Left stick Y", gamepad1.left_stick_y);
-            telemetry.addData("Left stick X", gamepad1.left_stick_x);
+            telemetry.addData("Foward", gamepad1.left_stick_y);
+            telemetry.addData("Strafe", gamepad1.left_stick_x);
 
             // Parem stick
-            telemetry.addData("Right stick Y", gamepad1.right_stick_y);
-            telemetry.addData("Right stick X", gamepad1.right_stick_x);
+            telemetry.addData("Turn", gamepad1.right_stick_y);
 
             // speed limiti muutmine
             if (gamepad1.right_bumper && !previousRightBumper){
@@ -52,9 +62,9 @@ public class MainTeleop extends LinearOpMode {
             // maksimaalne ja minimaalne speedlimit suurus
             speedlimit = Math.max(0.0, Math.min(1.0,speedlimit));
 
-            double forward = -gamepad1.left_stick_y * speedlimit;
-            double strafe = gamepad1.left_stick_x * speedlimit;
-            double turn = -gamepad1.right_stick_x * speedlimit;
+            double forward = applyDeadzone(-gamepad1.left_stick_y) * speedlimit;
+            double strafe = applyDeadzone(gamepad1.left_stick_x) * speedlimit;
+            double turn = applyDeadzone(-gamepad1.right_stick_x) * speedlimit;
 
             // drive functioni ja drive object btw ma tean sen sitt
             drive.drive(forward,strafe,turn);
@@ -71,6 +81,5 @@ public class MainTeleop extends LinearOpMode {
             telemetry.update();
         }
         drive.stop();
-
     }
 }

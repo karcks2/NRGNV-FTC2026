@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-public class MecanumDrive {
+public class IMU {
 
 
 
