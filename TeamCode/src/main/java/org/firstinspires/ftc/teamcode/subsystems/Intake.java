@@ -9,9 +9,9 @@ public class Intake {
     private DcMotor intakeMotor;
     private boolean isRunning = false;
 
-    public void start() {
+    public void start(double power) {
 
-        intakeMotor.setPower(0.3);
+        intakeMotor.setPower(power);
         isRunning = true;
 
     }
@@ -28,18 +28,28 @@ public class Intake {
 
     }
 
-    public void toggle() {
+    public void toggle(double power) {
 
         isRunning = !isRunning;
 
-        if (isRunning){
+        if (isRunning == true){
 
-            start();
+            start(power);
+
 
         }
         else{
 
             stop();
+
+        }
+
+    }
+    public void setPower(double power){
+
+        if (isRunning){
+
+            intakeMotor.setPower(power);
 
         }
 
