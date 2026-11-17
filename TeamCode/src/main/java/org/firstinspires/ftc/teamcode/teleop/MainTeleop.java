@@ -42,11 +42,12 @@
             boolean previousLeftBumper = false;
 
             // intake trigger
-            boolean previousR2 = false;
+            boolean previousSquare = false;
             // intake speedlimit
             boolean previousCross = false;
             boolean previousCircle = false;
-
+            // intake suuna muutmine
+            boolean previousTriangle = false;
             // algne speed limit
             double speedlimit = 0.5;// 0.5 limiteerib mootori kiirust 50%-ni
 
@@ -94,8 +95,14 @@
                 // drive functioni ja drive object btw ma tean sen sitt
                 drive.drive(forward,strafe,turn);
 
+                // intake suuna muutmine
+                if (gamepad1.triangle && !previousTriangle) {
+                    intake.toggleDirection();
+                }
+                previousTriangle = gamepad1.triangle;
+
                 // intake tirgger
-                if (gamepad1.right_trigger > 0.5 && !previousR2) {
+                if (gamepad1.square && !previousSquare) {
 
                     intake.toggle(intakePower);
                 }
@@ -103,7 +110,7 @@
                 boolean currentLeftBumper = gamepad1.left_bumper;
                 boolean currentRightBumper = gamepad1.right_bumper;
 
-                boolean currentR2Trigger = gamepad1.right_trigger > 0.5;
+                boolean currentSquare = gamepad1.square;
 
                 boolean currentCross = gamepad1.cross;
                 boolean currentCircle = gamepad1.circle;
@@ -111,7 +118,7 @@
                 previousRightBumper = currentRightBumper;
                 previousLeftBumper = currentLeftBumper;
 
-                previousR2 = currentR2Trigger;
+                previousSquare = currentSquare;
 
                 previousCross = currentCross;
                 previousCircle = currentCircle;
@@ -121,10 +128,12 @@
                 telemetry.addData("Speed limit", speedlimit);
 
                 telemetry.addData("Intake speed limit", intakePower);
+                telemetry.addData("Intake direction", intake.getDirection());
 
                 telemetry.addData("Yaw", robotIMU.getYaw());
                 telemetry.addData("Pitch", robotIMU.getPitch());
                 telemetry.addData("Roll", robotIMU.getRoll());
+
 
                 // alusta uut telemetry tsyklit
                 telemetry.update();
