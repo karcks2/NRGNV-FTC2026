@@ -89,7 +89,7 @@
                 intakePower = Math.max(0.0, Math.min(1.0,intakePower));
 
                 double forward = applyDeadzone(-gamepad1.left_stick_y) * speedlimit;
-                double strafe = applyDeadzone(gamepad1.left_stick_x) * speedlimit;
+                double strafe = applyDeadzone(-gamepad1.left_stick_x) * speedlimit;
                 double turn = applyDeadzone(-gamepad1.right_stick_x) * speedlimit;
 
                 // drive functioni ja drive object btw ma tean sen sitt
