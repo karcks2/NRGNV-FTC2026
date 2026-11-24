@@ -15,7 +15,6 @@
     public class MainTeleop extends LinearOpMode {
 
         // Deadzone function
-        //slop
         private double applyDeadzone(double value) {
 
             if (Math.abs(value) <= 0.1){ // 10% Deadzone
