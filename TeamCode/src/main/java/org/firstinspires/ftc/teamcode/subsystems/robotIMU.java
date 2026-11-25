@@ -17,7 +17,7 @@ public class robotIMU {
         RevHubOrientationOnRobot orientation =
                 new RevHubOrientationOnRobot(
                         RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                        RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                        RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
                 );
 
         IMU.Parameters parameters = new IMU.Parameters(orientation);

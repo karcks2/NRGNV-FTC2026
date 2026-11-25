@@ -134,6 +134,7 @@
                 telemetry.addData("Pitch", robotIMU.getPitch());
                 telemetry.addData("Roll", robotIMU.getRoll());
 
+                drive.addEncoderTelemetry(telemetry);
 
                 // alusta uut telemetry tsyklit
                 telemetry.update();
